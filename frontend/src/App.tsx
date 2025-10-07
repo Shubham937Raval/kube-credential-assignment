@@ -10,6 +10,7 @@ export default function App() {
       <p className="subtitle">Simple credential issuance and verification demo</p>
       <Issuance />
       <Verification />
+      <div id="toast-container"></div>
     </div>
   );
 }

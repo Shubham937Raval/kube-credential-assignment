@@ -1,7 +1,22 @@
 import React, { useState } from "react";
 import { VerifyResponse } from "@shared/custom_types";
 
-const VERIFICATION_URL = `${import.meta.env.VITE_VERIFICATION_URL || ""}/verify`;
+const VERIFICATION_URL = `${import.meta.env.VITE_VERIFICATION_URL}/verify`;
+
+function showToast(message: string, type: "success" | "error") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
 
 export default function Verification() {
   const [id, setId] = useState("");
@@ -17,7 +32,17 @@ export default function Verification() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       });
-      setResult(await resp.json());
+
+      if (!resp.ok) {
+        showToast("Verification failed", "error");
+        return;
+      }
+
+      const data = await resp.json();
+      setResult(data);
+      showToast("Credential verified successfully!", "success");
+    } catch (err) {
+      showToast("Network error", "error");
     } finally {
       setLoading(false);
     }
@@ -38,9 +63,7 @@ export default function Verification() {
         </button>
       </form>
 
-      {result && (
-        <pre>{JSON.stringify(result, null, 2)}</pre>
-      )}
+      {result && <pre>{JSON.stringify(result, null, 2)}</pre>}
     </section>
   );
 }

@@ -1,7 +1,22 @@
 import React, { useState } from "react";
 import { Credential, IssueResponse } from "@shared/custom_types";
 
-const ISSUANCE_URL = `${import.meta.env.VITE_ISSUANCE_URL || ""}/issue`;
+const ISSUANCE_URL = `${import.meta.env.VITE_ISSUANCE_URL}/issue`;
+
+function showToast(message: string, type: "success" | "error") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
 
 export default function Issuance() {
   const [credential, setCredential] = useState<Credential>({ id: "", name: "", email: "" });
@@ -17,7 +32,17 @@ export default function Issuance() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credential),
       });
-      setResult(await resp.json());
+
+      if (!resp.ok) {
+        showToast("Failed to issue credential", "error");
+        return;
+      }
+
+      const data = await resp.json();
+      setResult(data);
+      showToast("Credential issued successfully!", "success");
+    } catch (err) {
+      showToast("Network error", "error");
     } finally {
       setLoading(false);
     }
@@ -51,9 +76,7 @@ export default function Issuance() {
         </button>
       </form>
 
-      {result && (
-        <pre>{JSON.stringify(result, null, 2)}</pre>
-      )}
+      {result && <pre>{JSON.stringify(result, null, 2)}</pre>}
     </section>
   );
 }
