@@ -1,3 +1,10 @@
 {
-  "verifications": []
+  "verifications": [
+    {
+      "id": "123",
+      "attemptedAt": "2025-10-07T09:38:13.069Z",
+      "workerId": "worker-607",
+      "valid": true
+    }
+  ]
 }
