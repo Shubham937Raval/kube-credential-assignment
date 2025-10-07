@@ -12,7 +12,7 @@
     "dev:issuance": "npm run dev -w backend/issuance-service",
     "dev:verification": "npm run dev -w backend/verification-service",
     "dev:frontend": "npm run dev -w frontend",
-    "vercel-build": "npm --workspace frontend run build"
+    "vercel-build": "npm run build --workspace frontend"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"
