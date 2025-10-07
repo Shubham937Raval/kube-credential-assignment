@@ -1,0 +1,18 @@
+{
+  "name": "kube-credential-assignment",
+  "private": true,
+  "workspaces": [
+    "backend/issuance-service",
+    "backend/verification-service",
+    "frontend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w backend/issuance-service\" \"npm run dev -w backend/verification-service\"",
+    "dev:issuance": "npm run dev -w backend/issuance-service",
+    "dev:verification": "npm run dev -w backend/verification-service"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
