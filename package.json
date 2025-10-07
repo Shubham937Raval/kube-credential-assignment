@@ -8,10 +8,7 @@
     "shared"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev -w backend/issuance-service\" \"npm run dev -w backend/verification-service\" \"npm run dev -w frontend\"",
-    "dev:issuance": "npm run dev -w backend/issuance-service",
-    "dev:verification": "npm run dev -w backend/verification-service",
-    "dev:frontend": "npm run dev -w frontend"
+    "vercel-build": "cd frontend && npm install && npm run build"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"
